@@ -1,4 +1,4 @@
-import BlogModel from "../models/BlogModel"
+import BlogModel from "../models/BlogModel.js"
 
 export const getAllBlogs = async(req, res) => {
     try {
