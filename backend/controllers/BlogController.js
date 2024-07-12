@@ -12,7 +12,7 @@ export const getAllBlogs = async(req, res) => {
 export const getBlog = async(req, res) => {
     try {
         const blog = await BlogModel.findAll({where: {id:req.params.id}})
-        res.json(blog)
+        res.json(blog[0])
     } catch (error) {
         res.json({ message: error.message })
     }
@@ -20,7 +20,7 @@ export const getBlog = async(req, res) => {
 
 export const createBlog = async(req, res) => {
     try {
-        await BlogModel.create(req, body)
+        await BlogModel.create(req.body)
         res.json({
             "message" : "Registro Creado"
         })
@@ -31,7 +31,7 @@ export const createBlog = async(req, res) => {
 
 export const updateBlog = async(req, res) => {
     try {
-        await BlogModel.update(req, body, {
+        await BlogModel.update(req.body, {
             where: { id: req.params.id }
         })
         res.json({
@@ -44,7 +44,7 @@ export const updateBlog = async(req, res) => {
 
 export const deleteBlog = async(req, res) => {
     try {
-        await BlogModel.destroy(req, body, {
+        await BlogModel.destroy({
             where:{ id: req.params.id }
         })
         res.json({
