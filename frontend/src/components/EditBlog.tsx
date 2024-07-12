@@ -11,7 +11,7 @@ const EditBlog = () => {
 
     const handleUpdate = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await axios.put(`${URL}/${id}`, {
+        await axios.put(`${URL}/blogs/${id}`, {
             title: title,
             content: content
         })
@@ -20,7 +20,7 @@ const EditBlog = () => {
 
     const getBlogById = useCallback(
         async() => {
-            const res = await axios.get(`${URL}/${id}`)
+            const res = await axios.get(`${URL}/blogs/${id}`)
             setTitle(res.data.title)
             setContent(res.data.content)
         },[id]) 

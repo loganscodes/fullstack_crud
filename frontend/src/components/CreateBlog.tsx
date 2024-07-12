@@ -13,7 +13,7 @@ const CreateBlog = () => {
 
         e.preventDefault()
 
-        await axios.post(URL, { title: title, content: content })
+        await axios.post(`${URL}/blogs`, { title: title, content: content })
         navigate('/')
 
     }

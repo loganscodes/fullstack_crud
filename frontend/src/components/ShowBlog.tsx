@@ -14,12 +14,12 @@ const ShowBlog = () => {
     },[])
 
     const getBlogs = async() => {
-        const res = await axios.get(URL)
+        const res = await axios.get(`${URL}/blogs`)
         setBlogs(res.data)
     }
 
     const deleteBlog = async(id: number) => {
-        await axios.delete(`${URL}/${id}`)
+        await axios.delete(`${URL}/blogs/${id}`)
         getBlogs()
     }
 
