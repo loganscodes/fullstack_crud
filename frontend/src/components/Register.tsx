@@ -13,7 +13,7 @@ const Register = () => {
     const handleRegister = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        await axios.post(`${URL}/register`, { name: name, email: email, password: password})
+        await axios.post(`${URL}/auth/register`, { name: name, email: email, password: password})
         navigate('/')
     }
 
