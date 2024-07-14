@@ -1,6 +1,6 @@
 import express from 'express'
 import { createBlog, deleteBlog, getAllBlogs, getBlog, updateBlog } from '../controllers/BlogController.js'
-import { createUser } from '../controllers/UserController.js'
+import { createUser, loginUser } from '../controllers/UserController.js'
 
 const routerBlog = express.Router()
 const routerUser = express.Router()
@@ -12,7 +12,8 @@ routerBlog.put('/:id', updateBlog)
 routerBlog.delete('/:id', deleteBlog)
 
 
-routerUser.post('/', createUser)
+routerUser.post('/register', createUser)
+routerBlog.post('/login', loginUser)
 
 
 export { routerBlog, routerUser}
