@@ -4,15 +4,22 @@ import CreatePage from "./pages/create";
 import EditPage from "./pages/edit";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
+import PrivateRoute from "./components/PrivateRoute";
+
+// const PrivateRoute = () => {
+
+    
+
+// }
 
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <BlogsPage/>
+        element: <PrivateRoute element={<BlogsPage/>}/>,
     },
     {
         path: '/create',
-        element: <CreatePage/>
+        element: <PrivateRoute element={<CreatePage/>}/>
     },
     {
         path: '/edit/:id',
