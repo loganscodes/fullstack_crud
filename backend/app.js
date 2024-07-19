@@ -2,7 +2,9 @@ import express from 'express'
 import {routerBlog, routerUser} from './routes/routes.js'
 import cors from 'cors'
 import db from './database/db.js'
+import dotenv from 'dotenv'
 
+dotenv.config()
 
 const app = express()
 app.use(cors())

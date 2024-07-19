@@ -1,6 +1,8 @@
 import UserModel from "../models/UserModel.js"
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv';
+dotenv.config();
 
 export const createUser = async(req, res) => {
 
@@ -17,26 +19,32 @@ export const createUser = async(req, res) => {
     }
 }
 
-export const loginUser = async(req, res) => {
+
+export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await UserModel.findOne({ where: {email} })
+        const user = await UserModel.findOne({ where: { email } });
 
-        if(!user){
-            return res.status(401).json({ message: 'Credenciales Invalidas'})
+        if (!user) {
+            return res.status(401).json({ message: 'Credenciales Invalidas' });
         }
 
-        const isValidPassword = await bcrypt.compare(password, user.password)
+        const isValidPassword = await bcrypt.compare(password, user.password);
 
-        if(!isValidPassword){
-            return res.status(401).json({ message: 'Credenciales Invalidas' })
+        if (!isValidPassword) {
+            return res.status(401).json({ message: 'Credenciales Invalidas' });
         }
 
-        const token = jwt.sing({ id: user.id, name: user.name, email: user.email}, 'token', {
-            expiresIn: '1h'
-        })
+        const token = jwt.sign(
+            { id: user.id, name: user.name, email: user.email },
+            process.env.JWT_SECRET,  // Usando la clave secreta desde las variables de entorno
+            { expiresIn: '1h' }
+        );
+
+        // Enviar el token en la respuesta
+        res.json({ message: 'Inicio de sesión exitoso', token });
     } catch (error) {
         res.status(500).json({ message: 'Error al iniciar sesión', error: error.message });
     }
-}
+};

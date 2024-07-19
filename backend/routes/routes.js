@@ -13,7 +13,7 @@ routerBlog.delete('/:id', deleteBlog)
 
 
 routerUser.post('/register', createUser)
-routerBlog.post('/login', loginUser)
+routerUser.post('/login', loginUser)
 
 
 export { routerBlog, routerUser}
