@@ -1,59 +1,38 @@
-import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { createContext, useState, ReactNode, useContext } from "react";
 
-// Define la interfaz para el usuario
-interface User {
-    id: number;
-    name: string;
-    email: string;
-}
-
-// Define la interfaz para el estado de autenticación
-interface AuthState {
-    isAuthenticated: boolean;
-    user: User | null;
-}
-
-// Define la interfaz para el contexto de autenticación
 interface AuthContextType {
-    authState: AuthState;
-    login: (user: User, token: string) => void;
+    token: string | null;
+    login: (token: string) => void;
     logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [authState, setAuthState] = useState<AuthState>({
-        isAuthenticated: false,
-        user: null,
-    });
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
+    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
 
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            // Aquí podrías hacer una verificación del token o una solicitud para obtener los datos del usuario.
-            setAuthState({ isAuthenticated: true, user: { id: 1, name: 'User', email: 'user@example.com' } }); // Ejemplo de usuario
-        }
-    }, []);
-
-    const login = (user: User, token: string) => {
+    const login = (token: string) => {
+        setToken(token);
         localStorage.setItem('token', token);
-        setAuthState({ isAuthenticated: true, user });
-        navigate('/dashboard');
     };
 
     const logout = () => {
+        setToken(null);
         localStorage.removeItem('token');
-        setAuthState({ isAuthenticated: false, user: null });
-        navigate('/login');
     };
 
     return (
-        <AuthContext.Provider value={{ authState, login, logout }}>
+        <AuthContext.Provider value={{ token, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
+};
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const useAuth = () => {
+    const context = useContext(AuthContext);
+    if (context === undefined) {
+        throw new Error("useAuth must be used within an AuthProvider");
+    }
+    return context;
 };
