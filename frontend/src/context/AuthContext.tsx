@@ -1,7 +1,7 @@
-import { createContext, useState, ReactNode, useContext } from "react";
+import { createContext, useContext, useState, ReactNode } from "react";
 
 interface AuthContextType {
-    token: string | null;
+    isAuthenticated: boolean;
     login: (token: string) => void;
     logout: () => void;
 }
@@ -9,20 +9,22 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-    const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
+        return !!localStorage.getItem('token');
+    });
 
     const login = (token: string) => {
-        setToken(token);
         localStorage.setItem('token', token);
+        setIsAuthenticated(true);
     };
 
     const logout = () => {
-        setToken(null);
         localStorage.removeItem('token');
+        setIsAuthenticated(false);
     };
 
     return (
-        <AuthContext.Provider value={{ token, login, logout }}>
+        <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
             {children}
         </AuthContext.Provider>
     );
@@ -31,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 // eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (context === undefined) {
+    if (!context) {
         throw new Error("useAuth must be used within an AuthProvider");
     }
     return context;

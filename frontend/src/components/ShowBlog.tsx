@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import { BlogProps } from "../interfaces/blogs-interface"
 import { Link } from "react-router-dom"
 import { URL } from "../api"
+import Logout from "./Logout"
 
 
 const ShowBlog = () => {
@@ -26,6 +27,7 @@ const ShowBlog = () => {
 
     return (
         <div className="container">
+            <Logout/>
             <div className="row">
                 <div className="col">
                     <Link to={'/create'} className="btn btn-primary mt-2 mb-2">Create</Link>
